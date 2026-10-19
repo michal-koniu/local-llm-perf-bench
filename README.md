@@ -282,6 +282,7 @@ More hardware-specific findings: [radeon-r9700-rocm-notes](https://github.com/mi
 | [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) | What is actually being measured, and why |
 | [`docs/MANUAL.md`](docs/MANUAL.md) | The same measurement by hand, every flag explained |
 | [`docs/AGENT-PLAYBOOK.md`](docs/AGENT-PLAYBOOK.md) | System prompt for an orchestrating agent |
+| [`server-bench/`](server-bench/README.md) | Speed through llama-server/llama-swap: speculative decoding, several agents at once |
 
 ---
 
@@ -293,9 +294,9 @@ Stated plainly, because it matters:
   `llama-bench` measures throughput. This is the most important missing piece.
 - **Answer quality.** That is what [local-llm-quality-bench](https://github.com/michal-koniu/local-llm-quality-bench)
   is for: the same models, served the same way, graded on agent and assistant tasks in PL and EN.
-- **Concurrent request behaviour** — matters as soon as more than one person uses the box.
-- **Tensor-parallel / vLLM.** The harness drives `llama-bench` (layer split). vLLM TP on
-  RDNA4 needs `NCCL_PROTO=Simple` and more — see the notes repo.
+- **Concurrent request behaviour** — only partly: [`server-bench/`](server-bench/README.md) measures 1, 2 and 4 simultaneous agents through llama-server, without the conditions record of `bench.py`.
+- **Tensor-parallel / vLLM.** The harness drives `llama-bench` (layer split). llama.cpp's own experimental `--split-mode tensor` and speculative decoding can be
+  measured through the server with [`server-bench/`](server-bench/README.md). vLLM TP on RDNA4 needs `NCCL_PROTO=Simple` and more — see the notes repo.
 - **Non-AMD hardware.** Telemetry goes through `amd-smi`. The structure would port to
   `nvidia-smi` without much trouble; I don't have the hardware to test it.
 
