@@ -10,6 +10,8 @@ Standard library only.
 | `bench_spec.py MODEL [OUT.json]` | **one agent**: four kinds of task (translation PL→EN, tool call, code, free prose) × temperature 0 and 1.0, 300 tokens each; tok/s and draft acceptance per task | `BENCH_REPS=2 python3 bench_spec.py deepseek out.json` |
 | `bench_conc.py MODEL OUT.json` | **1, 2 and 4 agents at once** (temperature 0.2, 300 tokens each, two rounds): tok/s per stream and in total | `python3 bench_conc.py deepseek out.json` |
 
+`bench_conc.py` takes `BENCH_N=1,4,8,12` for other concurrency levels (default 1,2,4) and `BENCH_URL` to measure a server other than llama-swap on `localhost:8080`.
+
 Both print a summary table at the end and (if given) write every request to JSON.
 
 ## Read the numbers with these caveats
