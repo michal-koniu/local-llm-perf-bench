@@ -27,3 +27,16 @@ Both print a summary table at the end and (if given) write every request to JSON
 Used for the speculative-decoding and tensor-split measurements in
 [local-llm-bench-results/SPEC-DECODING.md](https://github.com/michal-koniu/local-llm-bench-results/blob/main/SPEC-DECODING.md); how they fit into a tuning procedure:
 [llm-education: speeding up generation](https://github.com/michal-koniu/llm-education/tree/main/en/speeding-up-generation).
+
+## bench_stream.py — any engine, real sampling
+
+`bench_stream.py MODEL TEMP TOP_P TOP_K [OUT.json]` measures decode speed from the client side of a streaming
+request, so it works the same for llama-server, vLLM, radiance or llama-swap in front of them. Always pass the
+model vendor's sampling: speculative decoding accepts many more draft tokens at temperature 0, so greedy numbers
+overstate what real chats get. `BENCH_N=1,4,8` sets the parallel streams, `BENCH_URL` the server,
+`BENCH_CODE_FILE` the long-context source file.
+
+## spec_sweep.py — tune llama.cpp speculative decoding
+
+Starts llama-server once per variant of an existing llama-swap entry (draft length, drafter type, Vulkan vs ROCm
+binary) and measures each with the same two prompts. See the docstring.
